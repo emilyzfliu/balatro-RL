@@ -1,0 +1,10 @@
+name: balatro-gym
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - pip
+  - pip:
+    - gymnasium 
