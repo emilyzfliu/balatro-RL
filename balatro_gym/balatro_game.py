@@ -109,12 +109,14 @@ class BalatroGame:
         self._draw_cards()
 
     def highlight_card(self, hand_index: int):
+        if hand_index < 0 or hand_index >= len(self.hand_indexes):
+            return
         self.highlighted_indexes[hand_index] = 1
 
     def play_hand(self):
         self.round_hands -= 1
 
-        score = self._evaluate_hand([self.deck[self.hand_indexes[i]] for i in range(self.hand_size) if self.highlighted_indexes[i] == 1])
+        score = self._evaluate_hand([self.deck[self.hand_indexes[i]] for i in range(self.hand_size) if 0 <= i < len(self.hand_indexes) and self.highlighted_indexes[i] == 1])
         self.round_score += score
 
         if self.round_score >= self.blinds[self.blind_index]:
@@ -157,11 +159,7 @@ class BalatroGame:
                 if self.highlighted_indexes[i] == 1:
                     self.hand_indexes.pop(i)
             except IndexError as e:
-                print(f"Index error: {e}")
-                print(self.highlighted_indexes)
-                print(self.hand_indexes)
-                raise e
-
+                pass
         for card_index in np.random.choice(remaining_cards, min(self.hand_size - sum(self.highlighted_indexes), len(remaining_cards)), replace=False):
             self.deck[card_index].played = True
             self.hand_indexes.append(card_index)

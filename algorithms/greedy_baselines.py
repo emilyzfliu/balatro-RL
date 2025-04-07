@@ -105,6 +105,7 @@ if __name__ == "__main__":
     n_trials = 1000
     wins = 0
     losses = 0
+    average_ante = 0
     for _ in range(n_trials):
         game = BalatroGame()
         greedy(game, verbose=(n_trials == 1))
@@ -112,11 +113,14 @@ if __name__ == "__main__":
             wins += 1
         else:
             losses += 1
+        average_ante += game.ante
     print('Greedy win rate:', wins / n_trials)
     print('Wins:', wins, 'Losses:', losses)
+    print('Average ante:', average_ante / n_trials)
 
     wins = 0
     losses = 0
+    average_ante = 0
     for _ in range(n_trials):
         game = BalatroGame()
         epsilon_greedy(game, epsilon=0.1, verbose=(n_trials == 1))
@@ -124,5 +128,7 @@ if __name__ == "__main__":
             wins += 1
         else:
             losses += 1
+        average_ante += game.ante
     print('Top k epsilon greedy win rate:', wins / n_trials)
     print('Wins:', wins, 'Losses:', losses)
+    print('Average ante:', average_ante / n_trials)
