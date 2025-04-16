@@ -7,10 +7,12 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 
+from balatro_gym.balatro_game import BalatroGame
+
 # TODO: test
 
 class TwoPhaseEnv(gym.Env):
-    def __init__(self, action_dim=5, max_weight=10):
+    def __init__(self, game: BalatroGame, action_dim=5, max_weight=10):
         '''
         action_dim: Set of all possible Jokers, cards, and packs that can be purchased from the shop.
         For any given round, the action space is masked such that only the actions available to the current round are visible.
@@ -19,6 +21,8 @@ class TwoPhaseEnv(gym.Env):
         An assumption is made where each item in the action space has a consistent cost.
         '''
         super(TwoPhaseEnv, self).__init__()
+
+        self.game = game
 
         # Phase 1: Executor agent
         # TODO: Integrate code from algorithms folder
@@ -38,12 +42,11 @@ class TwoPhaseEnv(gym.Env):
         self.executor_score = 0
         return self.modified_state
 
-    def step(self, modifier_action):
+    def step(self, modifier_action, policy_gradient=True):
         # Assume that the first round is easily passed with a greedy approach (Reasonable from empirical observation)
         # That way, we assume that the modifier always goes first.
 
-        # Apply weight constraint
-        selected = np.array(modifier_action)
+        selected = (modifier_action > 0.5).astype(int) if policy_gradient else np.array(modifier_action)
         total_weight = np.sum(selected * self.action_weights)
         if total_weight > self.max_weight:
             selected = self._project_to_budget(selected)
