@@ -20,13 +20,9 @@ We formulate Balatro as a cooperative game between two agents: `round`, which pl
 | `round` | Epsilon-greedy, Policy gradient | Deck, round/ante, Jokers, Tarot cards | Has the opportunity to upgrade playing cards through the use of Tarot cards. |
 | `shop` | Random search, Policy gradient | Current money, shop options: Two cards, two booster packs, one voucher. Unlimited reroll opportunities. | Changes current money, adds/removes cards, applies jokers and modifiers |
 
-### `round`
 In this approach, we make the assumption that an epsilon-greedy approach, where the optimal hand is played with probability $1 - \epsilon$, will be sufficient to pass any given round. Although this assumption is not universally true (it may be more optimal to, for example, discard cards in the event that the optimal hand does not yield a high enough payoff), it is reasonable in that the majority of sustainable gameplay in later rounds is obtained through deck-building, rather than strategic gameplay within the actual round itself.
 
 Each round's reward is defined by the monetary payout of the round in the case of a win, with a loss being a large negative reward.
-
-### `shop`
-
 
 
 ## LLM-based approach
